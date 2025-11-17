@@ -2,11 +2,11 @@
   "name": "votapp-backend",
   "version": "1.0.0",
   "description": "Backend hexagonal para sistema de votaciones VotApp",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only index.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "node dist/src/index.js",
     "lint": "eslint 'src/**/*.ts'",
     "test": "jest"
   },
@@ -34,7 +34,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^4.17.25",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^20.19.25",
+    "@types/node": "^20.11.30",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^6.16.0",
     "@typescript-eslint/parser": "^6.16.0",
