@@ -8,17 +8,17 @@ interface JWTPayload {
 }
 
 export class JWTUtil {
-  private static secret: string = process.env.JWT_SECRET || 'default_secret_change_me';
-  private static expiresIn: string = process.env.JWT_EXPIRES_IN || '7d';
-
   /**
    * Genera un token JWT
    * @param payload - Datos a incluir en el token
    * @returns Token JWT firmado
    */
   static generateToken(payload: JWTPayload): string {
-    // @ts-ignore - TypeScript tiene problemas con los tipos de jsonwebtoken
-    return jwt.sign(payload, this.secret, { expiresIn: this.expiresIn });
+    const secret = process.env.JWT_SECRET || 'default_secret_change_me';
+    const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+
+    // @ts-ignore - TypeScript tiene conflicto con tipos de jsonwebtoken
+    return jwt.sign(payload, secret, { expiresIn });
   }
 
   /**
@@ -28,14 +28,16 @@ export class JWTUtil {
    * @throws UnauthorizedError si el token es inválido
    */
   static verifyToken(token: string): JWTPayload {
+    const secret = process.env.JWT_SECRET || 'default_secret_change_me';
+
     try {
-      const decoded = jwt.verify(token, this.secret) as JWTPayload;
-      return decoded;
-    } catch (error) {
-      if (error instanceof jwt.TokenExpiredError) {
+      const decoded = jwt.verify(token, secret);
+      return decoded as JWTPayload;
+    } catch (error: any) {
+      if (error?.name === 'TokenExpiredError') {
         throw new UnauthorizedError('Token expirado');
       }
-      if (error instanceof jwt.JsonWebTokenError) {
+      if (error?.name === 'JsonWebTokenError') {
         throw new UnauthorizedError('Token inválido');
       }
       throw new UnauthorizedError('Error al verificar token');
@@ -51,6 +53,6 @@ export class JWTUtil {
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return null;
     }
-    return authHeader.substring(7); // Remueve "Bearer "
+    return authHeader.substring(7);
   }
 }

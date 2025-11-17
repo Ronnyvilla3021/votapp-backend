@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { ConnectOptions } from 'mongoose';
 
 export class DatabaseConnection {
   private static instance: DatabaseConnection;
@@ -22,7 +22,7 @@ export class DatabaseConnection {
     try {
       await mongoose.connect(uri, {
         dbName,
-      });
+      } as ConnectOptions);
 
       this.isConnected = true;
       console.log('✅ MongoDB Atlas conectado exitosamente');
@@ -41,7 +41,7 @@ export class DatabaseConnection {
       console.log('🔗 Mongoose conectado a MongoDB Atlas');
     });
 
-    mongoose.connection.on('error', (err) => {
+    mongoose.connection.on('error', (err: Error) => {
       console.error('❌ Error de conexión Mongoose:', err);
       this.isConnected = false;
     });

@@ -8,6 +8,10 @@ export class AppError extends Error {
     this.isOperational = isOperational;
 
     Object.setPrototypeOf(this, AppError.prototype);
-    Error.captureStackTrace(this, this.constructor);
+    
+    // Captura stack trace solo si está disponible
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, this.constructor);
+    }
   }
 }
