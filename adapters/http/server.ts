@@ -1,4 +1,4 @@
-import express, { Application } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { corsOptions } from '../configurations/cors';
 import { errorHandler, notFoundHandler } from './middlewares/errorHandler';
@@ -39,7 +39,7 @@ export class Server {
 
     // Request logging en desarrollo
     if (process.env.NODE_ENV === 'development') {
-      this.app.use((req, res, next) => {
+      this.app.use((req: Request, res: Response, next: NextFunction) => {
         console.log(`📨 ${req.method} ${req.path}`);
         next();
       });
@@ -48,7 +48,7 @@ export class Server {
 
   private setupRoutes(): void {
     // Health check
-    this.app.get('/health', (req, res) => {
+    this.app.get('/health', (req: Request, res: Response) => {
       res.json({
         success: true,
         message: 'VotApp API funcionando correctamente',
@@ -62,7 +62,7 @@ export class Server {
     this.app.use('/api/votes', createVoteRouter(this.dependencies.voteHandler));
 
     // Ruta raíz
-    this.app.get('/', (req, res) => {
+    this.app.get('/', (req: Request, res: Response) => {
       res.json({
         success: true,
         message: 'Bienvenido a VotApp API',

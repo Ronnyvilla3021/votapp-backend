@@ -2,8 +2,7 @@ import { CorsOptions } from 'cors';
 import { env } from './env';
 
 export const corsOptions: CorsOptions = {
-  origin: (origin, callback) => {
-    // Permitir peticiones del frontend configurado
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
     const allowedOrigins = [
       env.cors.origin,
       'http://localhost:5173', // Vite dev
