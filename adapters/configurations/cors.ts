@@ -9,6 +9,7 @@ export const corsOptions: CorsOptions = {
       'http://localhost:5174', // Vite dev alternativo
       'http://localhost:3000', // React dev
       'https://votapp-backend-w939.onrender.com', // Tu backend en Render
+      'https://tu-frontend.onrender.com',
     ];
 
     // Permitir peticiones sin origin (útil para Postman, curl, health checks, etc.)
