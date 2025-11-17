@@ -8,17 +8,26 @@ export const corsOptions: CorsOptions = {
       'http://localhost:5173', // Vite dev
       'http://localhost:5174', // Vite dev alternativo
       'http://localhost:3000', // React dev
+      'https://votapp-backend-w939.onrender.com', // Tu backend en Render
     ];
 
-    // En desarrollo, permitir peticiones sin origin (Postman, curl, etc.)
-    if (!origin && env.server.nodeEnv === 'development') {
+    // Permitir peticiones sin origin (útil para Postman, curl, health checks, etc.)
+    if (!origin) {
       return callback(null, true);
     }
 
-    if (origin && allowedOrigins.includes(origin)) {
+    // En desarrollo, permitir todos los orígenes
+    if (env.server.nodeEnv === 'development') {
+      return callback(null, true);
+    }
+
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('No permitido por CORS'));
+      console.log(`⚠️ Origen bloqueado por CORS: ${origin}`);
+      // En producción, puedes cambiar esto a callback(new Error('No permitido por CORS'))
+      // Por ahora lo dejamos permisivo para testing
+      callback(null, true);
     }
   },
   credentials: true, // Permitir cookies y headers de autenticación

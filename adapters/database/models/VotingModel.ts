@@ -56,7 +56,7 @@ const VotingSchema = new Schema<IVotingDocument>(
       unique: true,
       uppercase: true,
       length: 6,
-      index: true,
+      // ELIMINADO: index: true,  <-- Esta línea causaba el warning de índice duplicado
     },
     options: {
       type: [VotingOptionSchema],
