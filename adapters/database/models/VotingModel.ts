@@ -35,7 +35,7 @@ const VotingOptionSchema = new Schema<IVotingOptionDocument>(
     },
   },
   {
-    _id: false, // No crear _id automático para subdocumentos
+    _id: false,
   }
 );
 
@@ -53,17 +53,15 @@ const VotingSchema = new Schema<IVotingDocument>(
     code: {
       type: String,
       required: true,
-      unique: true,
       uppercase: true,
       length: 6,
-      // ELIMINADO: index: true,  <-- Esta línea causaba el warning de índice duplicado
     },
     options: {
       type: [VotingOptionSchema],
       required: true,
       validate: {
         validator: function (options: IVotingOptionDocument[]) {
-          return options.length >= 2; // Mínimo 2 opciones
+          return options.length >= 2;
         },
         message: 'Debe haber al menos 2 opciones',
       },
@@ -89,7 +87,7 @@ const VotingSchema = new Schema<IVotingDocument>(
   }
 );
 
-// Índices para optimizar búsquedas
+// Solo índices después del schema
 VotingSchema.index({ code: 1 }, { unique: true });
 VotingSchema.index({ isActive: 1 });
 VotingSchema.index({ createdBy: 1 });
